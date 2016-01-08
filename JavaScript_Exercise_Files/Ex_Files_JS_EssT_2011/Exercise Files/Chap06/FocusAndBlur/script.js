@@ -9,6 +9,6 @@ emailField.onfocus = function() {
 
 emailField.onblur = function() {
 	if ( emailField.value == "") {
-		emailField.value = "your email";
-	}
+			emailField.value = "your email";
+	}	
 };
