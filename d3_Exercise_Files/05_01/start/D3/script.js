@@ -1,8 +1,12 @@
 var bardata = [];
 
-for (var i=0; i < 30; i++) {
-    bardata.push(Math.round(Math.random()*30)+20)
+for (var i=0; i < 50; i++) {
+    bardata.push(Math.round(Math.random()*100)+10)
 }
+
+bardata.sort(function compareNumbers(a,b){
+    return a-b;
+});
 
 var height = 400,
     width = 600,
@@ -32,6 +36,7 @@ var tooltip = d3.select('body').append('div')
 var myChart = d3.select('#chart').append('svg')
     .attr('width', width)
     .attr('height', height)
+    .append('g')
     .selectAll('rect').data(bardata)
     .enter().append('rect')
         .style('fill', function(d,i) {
@@ -78,4 +83,22 @@ myChart.transition()
     })
     .duration(1000)
     .ease('elastic')
+
+var vGuideScale = d3.scale.linear()
+    .domain([0,d3.max(bardata)])
+    .range([height,0])
+
+var vAxis = d3.svg.axis()
+    .scale(vGuideScale)
+    .orient('left')
+    .ticks(10)
+
+var vGuide = d3.select('svg').append('g')
+    vAxis(vGuide)
+
+    vGuide.attr('transform', 'translate(35,0)')
+    vGuide.selectAll('path')
+        .style({fill:'none', stroke:'#000'})
+    vGuide.selectAll('line')
+        .style({stroke:'#000'})
 
