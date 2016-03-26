@@ -9,6 +9,8 @@ var height = 400,
     barWidth = 50,
     barOffset = 5;
 
+var tempColor;
+
 var colors = d3.scale.linear()
 .domain([0, bardata.length*.33, bardata.length*.66, bardata.length])
 .range(['#B58929','#C61C6F', '#268BD2', '#85992C'])
@@ -40,3 +42,14 @@ d3.select('#chart').append('svg')
         .attr('y', function(d) {
             return height - yScale(d);
         })
+    .on('mouseover', function(d){
+        tempColor = this.style.fill
+        d3.select(this)
+            .style('opacity',.5)
+            .style('fill', 'yellow')
+    })
+    .on('mouseout', function(d){
+        d3.select(this)
+            .style('opacity',1)
+            .style('fill', tempColor)
+    })
