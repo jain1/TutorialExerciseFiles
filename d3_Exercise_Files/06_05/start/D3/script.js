@@ -73,6 +73,11 @@ node.append('circle')
 	.attr('r', circleWidth )
 	.attr('fill', palette.pink)
 
+node.append('text')
+    .text(function(d) { return d.name})
+    .attr('font-family', 'Roboto Slab')
+    .attr('text-anchor', 'end')
+
 force.on('tick', function(e) {
 	node.attr('transform', function(d, i) {
 		return 'translate('+ d.x +', '+ d.y +')';

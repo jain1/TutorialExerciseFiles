@@ -1,59 +1,47 @@
-var width = 400,
-    height = 400,
-    radius = 200
-    colors = d3.scale.ordinal()
-        .range(['#595AB7','#A57706','#D11C24','#C61C6F','#BD3613','#2176C7','#259286','#738A05']);
+var width = 900,
+    height = 400;
 
-var piedata = [
-    {   label: "Barot",
-        value: 50 },
-    {   label: "Gerard",
-        value: 50},
-    {   label: "Jonathan",
-        value: 50},
-    {   label: "Lorenzo",
-        value: 50},
-    {   label: "Hillary",
-        value: 50},
-    {   label: "Jennifer",
-        value: 50}
-]
+var circleWidth = 5;
 
-var pie = d3.layout.pie()
-    .value(function(d) {
-        return d.value;
-    })
+var palette = {
+    "lightgray": "#819090",
+    "gray": "#708284",
+    "mediumgray": "#536870",
+    "darkgray": "#475B62",
 
-var arc = d3.svg.arc()
-    .outerRadius(radius)
+    "darkblue": "#0A2933",
+    "darkerblue": "#042029",
 
-var myChart = d3.select('#chart').append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .append('g')
-    .attr('transform', 'translate('+(width-radius)+','+(height-radius)+')')
-    .selectAll('path').data(pie(piedata))
-    .enter().append('g')
-        .attr('class', 'slice')
+    "paleryellow": "#FCF4DC",
+    "paleyellow": "#EAE3CB",
+    "yellow": "#A57706",
+    "orange": "#BD3613",
+    "red": "#D11C24",
+    "pink": "#C61C6F",
+    "purple": "#595AB7",
+    "blue": "#2176C7",
+    "green": "#259286",
+    "yellowgreen": "#738A05"
+}
 
-var slices = d3.selectAll('g.slice')
-        .append('path')
-        .attr('fill', function(d, i) {
-            return colors(i);
-        })
-        .attr('d', arc)
+var nodes = [
+    { name: "Parent"},
+    { name: "child1"},
+    { name: "child2", target: [0]},
+    { name: "child3", target: [0]},
+    { name: "child4", target: [1]},
+    { name: "child5", target: [0, 1, 2, 3]}
+];
 
-var text = d3.selectAll('g.slice')
-    .append('text')
-    .text(function(d, i) {
-        return d.data.label;
-    })
-    .attr('text-anchor', 'middle')
-    .attr('fill', 'white')
-    .attr('transform', function(d) {
-        d.innerRadius = 0;
-        d.outerRadius = radius;
-        return 'translate('+ arc.centroid(d)+')'
-    })
+var links = [];
 
-
+for (var i = 0; i< nodes.length; i++) {
+    if (nodes[i].target !== undefined) {
+        for (var x = 0; x < nodes[i].target.length; x++ ) {
+            links.push({
+                source: nodes[i],
+                target: nodes[i].target[x]
+            })
+        }
+    }
+}
